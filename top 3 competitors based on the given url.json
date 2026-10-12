@@ -1,0 +1,149 @@
+{
+  "name": "top 3 compitators based on the given url",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        0,
+        0
+      ],
+      "id": "03826e05-838b-434d-8275-db605b71a6b7",
+      "name": "When chat message received",
+      "webhookId": "a5582628-925a-4e9f-9a30-6f8d9e7b10d5"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=you are website content researcher and your work is to analyze this website and tell what this website do and what are the services it provides\n\noutput should not exceed 100 words"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        224,
+        0
+      ],
+      "id": "e0994989-fd10-47b2-bf08-78853c906f5b",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        96,
+        208
+      ],
+      "id": "8587bfc8-ec6f-48bb-996e-dbfcd8b1d082",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "VRMcaRMCuZbk1Bgt",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.output }}",
+        "options": {
+          "systemMessage": "=\nYou are an expert market research AI agent. Your task is to identify and analyze the top 3 competitors of a given company or business based on the information provided by the user.\n\nFor each of the top 3 competitors, collect and present the following information:\n\n1. **Company Name:** The official name of the competitor.\n2. **Website URL:** The official website link of the competitor.\n3. **Annual Revenue:** The latest publicly available annual revenue, including the financial year and currency. If the exact revenue is unavailable, provide a reliable estimate and clearly label it as an estimate.\n4. **Net Worth:** Provide the company's publicly available valuation or net worth, as appropriate. For private companies, use a credible valuation estimate if available. Do not confuse company valuation with annual revenue.\n\n### Instructions\n\n- Identify exactly 3 relevant competitors.\n- Use reliable, up-to-date sources to verify information.\n- Prefer official company websites, annual reports, financial statements, and reputable business publications.\n- Never invent company names, URLs, revenue figures, or valuations.\n- If information cannot be verified, state \"Not publicly available.\"\n- Include the source URL for each financial figure.\n- Present the results in a clear, professional table.\n- After the table, provide a brief comparison highlighting the competitors' strengths and market positions.\n- If the user has not provided the company name, ask for it before starting the research.\n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        592,
+        0
+      ],
+      "id": "b3e1ca4e-92d7-474c-87d0-3707dee16137",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        464,
+        112
+      ],
+      "id": "8d64f3bb-bc59-4be0-bb04-f53fc9fe5ad0",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "VRMcaRMCuZbk1Bgt",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "114ee36f-2337-4155-8d78-ecb96b9eeddf",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "2c973207f9e67f81706703c63c35b4ad1a2d2c4cd2a022b6c20507050fb9d242"
+  },
+  "nodeGroups": [],
+  "id": "iEgKhuBOLCdlhM98",
+  "tags": []
+}
